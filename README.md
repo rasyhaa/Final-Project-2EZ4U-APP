@@ -3,11 +3,6 @@
 **Nama:** Muhammad Rasyha Syauqi Islam  
 **NRP:** 5024241066
 
-# Final Project - 2EZ4U APP
-
-**Nama:** Muhammad Rasyha Syauqi Islam  
-**NRP:** 5024241066
-
 ## Deskripsi Project
 
 **2EZ4U APP** merupakan project final mata kuliah Struktur Data dan Analisa Algoritma yang mengimplementasikan berbagai struktur data dan algoritma ke dalam sebuah aplikasi sederhana berbasis Python. Aplikasi ini dirancang sebagai sistem backend dan frontend sederhana untuk mengelola data pesanan pada layanan food delivery.
