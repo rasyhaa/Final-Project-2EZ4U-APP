@@ -30,18 +30,18 @@ class App:
         # =========================
         # WARNA
         # =========================
-        self.bg_sidebar = "#1E293B"
-        self.bg_utama = "#F8FAFC"
+        self.bg_sidebar = "#E9E1F5"
+        self.bg_utama = "#FFF9F4"
         self.bg_card = "#FFFFFF"
-        self.text_utama = "#0F172A"
-        self.text_sidebar = "#E2E8F0"
+        self.text_utama = "#4A4458"
+        self.text_sidebar = "#5E5870"
 
         self.buat_layout()
 
     def buat_layout(self):
-        # =========================
+        # ============================================================
         # CONTAINER UTAMA
-        # =========================
+        # ============================================================
         self.container = tk.Frame(
             self.root,
             bg=self.bg_utama
@@ -51,243 +51,198 @@ class App:
             expand=True
         )
 
-        # =========================
-        # SIDEBAR
-        # =========================
+        # ============================================================
+        # SIDEBAR KIRI - M1 SAJA
+        # ============================================================
         self.sidebar = tk.Frame(
             self.container,
-            width=240,
+            width=300,
             bg=self.bg_sidebar
         )
         self.sidebar.pack(
             side="left",
             fill="y"
         )
-
         self.sidebar.pack_propagate(False)
 
-        # =========================
-        # LOGO / NAMA APP
-        # =========================
-        logo = tk.Label(
+        # Header aplikasi
+        header_sidebar = tk.Frame(
             self.sidebar,
-            text="2EZ4U",
-            font=("Arial", 22, "bold"),
-            bg=self.bg_sidebar,
-            fg="white"
+            bg="#D8CBEA",
+            height=70
         )
-        logo.pack(
-            pady=(30, 5)
+        header_sidebar.pack(fill="x")
+        header_sidebar.pack_propagate(False)
+
+        tk.Label(
+            header_sidebar,
+            text="2EZ4U Food Delivery",
+            font=("Arial", 14, "bold"),
+            bg="#D8CBEA",
+            fg="#4A4458"
+        ).pack(
+            anchor="w",
+            padx=15,
+            pady=(17, 0)
         )
 
-        sublogo = tk.Label(
-            self.sidebar,
-            text="Order Management",
-            font=("Arial", 9),
-            bg=self.bg_sidebar,
-            fg=self.text_sidebar
-        )
-        sublogo.pack(
-            pady=(0, 30)
+        tk.Label(
+            header_sidebar,
+            text="M1 • DATA PESANAN",
+            font=("Arial", 8),
+            bg="#D8CBEA",
+            fg="#7A6E86"
+        ).pack(
+            anchor="w",
+            padx=15,
+            pady=(1, 0)
         )
 
-        # =========================
-        # LABEL MILESTONE
-        # =========================
-        label_milestone = tk.Label(
+        # Area menu dibuat scrollable
+        menu_container = tk.Frame(
             self.sidebar,
-            text="MILESTONE",
+            bg=self.bg_sidebar
+        )
+        menu_container.pack(
+            fill="both",
+            expand=True
+        )
+
+        canvas = tk.Canvas(
+            menu_container,
+            bg=self.bg_sidebar,
+            highlightthickness=0
+        )
+        scrollbar = tk.Scrollbar(
+            menu_container,
+            orient="vertical",
+            command=canvas.yview
+        )
+        menu_frame = tk.Frame(
+            canvas,
+            bg=self.bg_sidebar
+        )
+
+        menu_frame.bind(
+            "<Configure>",
+            lambda event: canvas.configure(
+                scrollregion=canvas.bbox("all")
+            )
+        )
+
+        canvas.create_window(
+            (0, 0),
+            window=menu_frame,
+            anchor="nw",
+            width=280
+        )
+        canvas.configure(
+            yscrollcommand=scrollbar.set
+        )
+
+        canvas.pack(
+            side="left",
+            fill="both",
+            expand=True
+        )
+        scrollbar.pack(
+            side="right",
+            fill="y"
+        )
+
+        # ============================================================
+        # DATA
+        # ============================================================
+        tk.Label(
+            menu_frame,
+            text="DATA",
             font=("Arial", 9, "bold"),
             bg=self.bg_sidebar,
-            fg="#94A3B8"
-        )
-        label_milestone.pack(
+            fg="#8A8196"
+        ).pack(
             anchor="w",
-            padx=20,
-            pady=(0, 10)
+            padx=12,
+            pady=(12, 5)
         )
 
-        # =========================
-        # MENU M1
-        # =========================
-        self.tombol_m1 = tk.Button(
-            self.sidebar,
-            text="  M1  •  Pesanan",
-            anchor="w",
-            font=("Arial", 11, "bold"),
-            bg="#334155",
-            fg="white",
-            activebackground="#475569",
-            activeforeground="white",
-            relief="flat",
-            bd=0,
-            padx=15,
-            pady=10,
-            command=self.halaman_m1
-        )
-        self.tombol_m1.pack(
-            fill="x",
-            padx=10,
-            pady=2
+        self._buat_menu_button(
+            menu_frame,
+            "Load",
+            self.muat_data
         )
 
-        # M2-M6 sementara
-        menu_lain = [
-            "  M2  •  Antrean",
-            "  M3  •  Laporan",
-            "  M4  •  Pencarian",
-            "  M5  •  Katalog",
-            "  M6  •  Peta"
-        ]
-
-        for menu in menu_lain:
-            tombol = tk.Button(
-                self.sidebar,
-                text=menu,
-                anchor="w",
-                font=("Arial", 11),
-                bg=self.bg_sidebar,
-                fg="#64748B",
-                activebackground=self.bg_sidebar,
-                activeforeground="#64748B",
-                relief="flat",
-                bd=0,
-                padx=15,
-                pady=10,
-                state="disabled"
-            )
-            tombol.pack(
-                fill="x",
-                padx=10,
-                pady=2
-            )
-
-        # =========================
-        # PEMISAH
-        # =========================
-        pemisah = tk.Frame(
-            self.sidebar,
-            height=1,
-            bg="#334155"
-        )
-        pemisah.pack(
-            fill="x",
-            padx=20,
-            pady=25
-        )
-
-                # =========================
-        # MENU M1
-        # =========================
-
-        self.tombol_pesanan = tk.Button(
-            self.sidebar,
-            text="  Pesanan",
-            anchor="w",
-            font=("Arial", 10),
+        # ============================================================
+        # M1 - DATA PESANAN
+        # ============================================================
+        tk.Label(
+            menu_frame,
+            text="M1 - DATA PESANAN",
+            font=("Arial", 9, "bold"),
             bg=self.bg_sidebar,
-            fg=self.text_sidebar,
-            activebackground="#334155",
-            activeforeground="white",
-            relief="flat",
-            bd=0,
-            padx=15,
-            pady=8,
-            command=self.halaman_m1
-        )
-        self.tombol_pesanan.pack(
-            fill="x",
-            padx=10,
-            pady=1
-        )
-
-        self.tombol_array = tk.Button(
-            self.sidebar,
-            text="  Array",
+            fg="#8A8196"
+        ).pack(
             anchor="w",
-            font=("Arial", 10),
-            bg=self.bg_sidebar,
-            fg=self.text_sidebar,
-            activebackground="#334155",
-            activeforeground="white",
-            relief="flat",
-            bd=0,
-            padx=15,
-            pady=8,
-            command=self.halaman_array
-        )
-        self.tombol_array.pack(
-            fill="x",
-            padx=10,
-            pady=1
+            padx=12,
+            pady=(12, 5)
         )
 
-        self.tombol_linked = tk.Button(
-            self.sidebar,
-            text="  Linked List",
-            anchor="w",
-            font=("Arial", 10),
-            bg=self.bg_sidebar,
-            fg=self.text_sidebar,
-            activebackground="#334155",
-            activeforeground="white",
-            relief="flat",
-            bd=0,
-            padx=15,
-            pady=8,
-            command=self.halaman_linked_list
+        self._buat_menu_button(
+            menu_frame,
+            "ARRAY - LIHAT PESANAN",
+            self.halaman_array
         )
-        self.tombol_linked.pack(
-            fill="x",
-            padx=10,
-            pady=1
+        self._buat_menu_button(
+            menu_frame,
+            "ARRAY - TAMBAH PESANAN REGULER",
+            lambda: self.halaman_tambah("REGULER")
         )
-
-        self.tombol_tambah = tk.Button(
-            self.sidebar,
-            text="  Tambah Pesanan",
-            anchor="w",
-            font=("Arial", 10),
-            bg=self.bg_sidebar,
-            fg=self.text_sidebar,
-            activebackground="#334155",
-            activeforeground="white",
-            relief="flat",
-            bd=0,
-            padx=15,
-            pady=8,
-            command=self.halaman_tambah
+        self._buat_menu_button(
+            menu_frame,
+            "ARRAY - TAMBAH PESANAN PRIORITAS",
+            lambda: self.halaman_tambah("PRIORITAS")
         )
-        self.tombol_tambah.pack(
-            fill="x",
-            padx=10,
-            pady=1
+        self._buat_menu_button(
+            menu_frame,
+            "ARRAY - TAMBAH PESANAN VIP",
+            lambda: self.halaman_tambah("VIP")
+        )
+        self._buat_menu_button(
+            menu_frame,
+            "ARRAY - HAPUS PESANAN",
+            self.halaman_hapus
         )
 
-        self.tombol_hapus = tk.Button(
-            self.sidebar,
-            text="  Hapus Pesanan",
-            anchor="w",
-            font=("Arial", 10),
-            bg=self.bg_sidebar,
-            fg=self.text_sidebar,
-            activebackground="#334155",
-            activeforeground="white",
-            relief="flat",
-            bd=0,
-            padx=15,
-            pady=8,
-            command=self.halaman_hapus
+        self._buat_menu_button(
+            menu_frame,
+            "LINKED LIST - LIHAT PESANAN",
+            self.halaman_linked_list
         )
-        self.tombol_hapus.pack(
-            fill="x",
-            padx=10,
-            pady=1
+        self._buat_menu_button(
+            menu_frame,
+            "LINKED LIST - TAMBAH PESANAN REGULER",
+            lambda: self.halaman_tambah("REGULER")
+        )
+        self._buat_menu_button(
+            menu_frame,
+            "LINKED LIST - TAMBAH PESANAN PRIORITAS",
+            lambda: self.halaman_tambah("PRIORITAS")
+        )
+        self._buat_menu_button(
+            menu_frame,
+            "LINKED LIST - TAMBAH PESANAN VIP",
+            lambda: self.halaman_tambah("VIP")
+        )
+        self._buat_menu_button(
+            menu_frame,
+            "LINKED LIST - HAPUS PESANAN",
+            self.halaman_hapus
         )
 
-        # =========================
+        # M2-M6 belum ditampilkan karena brief/detail-nya belum diberikan.
+
+        # ============================================================
         # CONTENT AREA
-        # =========================
+        # ============================================================
         self.content = tk.Frame(
             self.container,
             bg=self.bg_utama
@@ -298,6 +253,37 @@ class App:
             expand=True
         )
 
+        self.halaman_m1()
+
+    def _buat_menu_button(self, parent, text, command):
+        button = tk.Button(
+            parent,
+            text=text,
+            anchor="w",
+            font=("Arial", 9),
+            bg="#FDFBFF",
+            fg="#5E5870",
+            activebackground="#EADFF3",
+            activeforeground="#4A4458",
+            relief="solid",
+            bd=1,
+            padx=8,
+            pady=6,
+            cursor="hand2",
+            command=command
+        )
+        button.pack(
+            fill="x",
+            padx=10,
+            pady=1
+        )
+        return button
+
+    def muat_data(self):
+        self.array, self.linked_list = load_pesanan(
+            "data/pesanan.csv"
+        )
+        self.halaman = 1
         self.halaman_m1()
 
     def halaman_m1(self):
@@ -329,7 +315,7 @@ class App:
             text="Implementasi Array dan Linked List",
             font=("Arial", 11),
             bg=self.bg_utama,
-            fg="#64748B"
+            fg="#8A8196"
         ).pack(anchor="w", pady=(5, 0))
 
         # =========================
@@ -368,7 +354,7 @@ class App:
         info = tk.Frame(
             self.content,
             bg=self.bg_card,
-            highlightbackground="#E2E8F0",
+            highlightbackground="#E7DEEE",
             highlightthickness=1
         )
         info.pack(
@@ -401,7 +387,7 @@ class App:
             font=("Arial", 11),
             justify="left",
             bg=self.bg_card,
-            fg="#475569"
+            fg="#6B6478"
         ).pack(
             anchor="w",
             padx=25
@@ -432,7 +418,7 @@ class App:
             text="Data pesanan yang disimpan menggunakan struktur Array",
             font=("Arial", 11),
             bg=self.bg_utama,
-            fg="#64748B"
+            fg="#8A8196"
         ).pack(
             anchor="w",
             padx=35
@@ -459,7 +445,7 @@ class App:
         frame_get = tk.Frame(
             self.content,
             bg=self.bg_card,
-            highlightbackground="#E2E8F0",
+            highlightbackground="#E7DEEE",
             highlightthickness=1
         )
         frame_get.pack(
@@ -508,6 +494,14 @@ class App:
         tk.Button(
             frame_input,
             text="GET",
+            bg="#D8CBEA",
+            fg="#4A4458",
+            activebackground="#CBB8E0",
+            relief="flat",
+            bd=0,
+            padx=14,
+            pady=5,
+            cursor="hand2",
             command=self.get_array
         ).pack(side="left")
 
@@ -515,7 +509,7 @@ class App:
             frame_get,
             text="Masukkan index kemudian tekan GET.",
             bg=self.bg_card,
-            fg="#475569",
+            fg="#6B6478",
             justify="left"
         )
         self.label_hasil_array.pack(
@@ -529,7 +523,7 @@ class App:
             text="Waktu proses Array: -",
             font=("Arial", 9, "bold"),
             bg=self.bg_card,
-            fg="#2563EB"
+            fg="#9B7EBD"
         )
         self.label_waktu_array.pack(
             anchor="w",
@@ -600,7 +594,7 @@ class App:
             text="Data pesanan yang disimpan menggunakan struktur Linked List",
             font=("Arial", 11),
             bg=self.bg_utama,
-            fg="#64748B"
+            fg="#8A8196"
         ).pack(
             anchor="w",
             padx=35
@@ -627,7 +621,7 @@ class App:
         frame_get = tk.Frame(
             self.content,
             bg=self.bg_card,
-            highlightbackground="#E2E8F0",
+            highlightbackground="#E7DEEE",
             highlightthickness=1
         )
         frame_get.pack(
@@ -676,6 +670,14 @@ class App:
         tk.Button(
             frame_input,
             text="GET",
+            bg="#D8CBEA",
+            fg="#4A4458",
+            activebackground="#CBB8E0",
+            relief="flat",
+            bd=0,
+            padx=14,
+            pady=5,
+            cursor="hand2",
             command=self.get_linked_list
         ).pack(side="left")
 
@@ -683,7 +685,7 @@ class App:
             frame_get,
             text="Masukkan index kemudian tekan GET.",
             bg=self.bg_card,
-            fg="#475569",
+            fg="#6B6478",
             justify="left"
         )
         self.label_hasil_linked.pack(
@@ -697,7 +699,7 @@ class App:
             text="Waktu proses Linked List: -",
             font=("Arial", 9, "bold"),
             bg=self.bg_card,
-            fg="#2563EB"
+            fg="#9B7EBD"
         )
         self.label_waktu_linked.pack(
             anchor="w",
@@ -748,7 +750,7 @@ class App:
     # HALAMAN TAMBAH PESANAN
     # ============================================================
 
-    def halaman_tambah(self):
+    def halaman_tambah(self, jenis_awal=None):
         self._bersihkan_content()
 
         self._buat_header(
@@ -759,7 +761,7 @@ class App:
         card = tk.Frame(
             self.content,
             bg=self.bg_card,
-            highlightbackground="#E2E8F0",
+            highlightbackground="#E7DEEE",
             highlightthickness=1
         )
         card.pack(
@@ -789,7 +791,10 @@ class App:
             state="readonly",
             width=30
         )
-        self.input_jenis.set("REGULER")
+        if jenis_awal in ["REGULER", "PRIORITAS", "VIP"]:
+            self.input_jenis.set(jenis_awal)
+        else:
+            self.input_jenis.set("REGULER")
 
         self.input_oid = tk.Entry(card, width=33)
         self.input_pelanggan = tk.Entry(card, width=33)
@@ -812,7 +817,7 @@ class App:
                 text=label,
                 font=("Arial", 10, "bold"),
                 bg=self.bg_card,
-                fg="#475569"
+                fg="#6B6478"
             ).grid(
                 row=row,
                 column=0,
@@ -835,7 +840,7 @@ class App:
             text="",
             font=("Arial", 10),
             bg=self.bg_card,
-            fg="#475569",
+            fg="#6B6478",
             justify="left"
         )
         self.label_status_tambah.grid(
@@ -851,9 +856,9 @@ class App:
             card,
             text="TAMBAH PESANAN",
             font=("Arial", 10, "bold"),
-            bg="#2563EB",
+            bg="#B79ACB",
             fg="white",
-            activebackground="#1D4ED8",
+            activebackground="#9F82B5",
             activeforeground="white",
             relief="flat",
             bd=0,
@@ -879,7 +884,7 @@ class App:
         if not all([jenis, oid, pelanggan, resto, menu, harga_text]):
             self.label_status_tambah.config(
                 text="Semua field wajib diisi.",
-                fg="#DC2626"
+                fg="#D98B8B"
             )
             return
 
@@ -888,7 +893,7 @@ class App:
         except ValueError:
             self.label_status_tambah.config(
                 text="Harga harus berupa angka.",
-                fg="#DC2626"
+                fg="#D98B8B"
             )
             return
 
@@ -922,7 +927,7 @@ class App:
                 f"Pesanan {oid} berhasil ditambahkan sebagai {jenis}.\n"
                 f"Total data sekarang: {self.array.size}"
             ),
-            fg="#16A34A"
+            fg="#78A889"
         )
 
         self._kosongkan_form_tambah()
@@ -954,7 +959,7 @@ class App:
         card = tk.Frame(
             self.content,
             bg=self.bg_card,
-            highlightbackground="#E2E8F0",
+            highlightbackground="#E7DEEE",
             highlightthickness=1
         )
         card.pack(
@@ -987,7 +992,7 @@ class App:
             text="Index:",
             font=("Arial", 10, "bold"),
             bg=self.bg_card,
-            fg="#475569"
+            fg="#6B6478"
         ).pack(side="left")
 
         self.input_index_hapus = tk.Entry(
@@ -1004,9 +1009,9 @@ class App:
             frame_input,
             text="HAPUS PESANAN",
             font=("Arial", 10, "bold"),
-            bg="#DC2626",
+            bg="#D98B8B",
             fg="white",
-            activebackground="#B91C1C",
+            activebackground="#C87575",
             activeforeground="white",
             relief="flat",
             bd=0,
@@ -1021,7 +1026,7 @@ class App:
             text="Masukkan index yang ingin dihapus.",
             font=("Arial", 10),
             bg=self.bg_card,
-            fg="#475569",
+            fg="#6B6478",
             justify="left"
         )
         self.label_status_hapus.pack(
@@ -1036,7 +1041,7 @@ class App:
         except ValueError:
             self.label_status_hapus.config(
                 text="Index harus berupa angka.",
-                fg="#DC2626"
+                fg="#D98B8B"
             )
             return
 
@@ -1045,7 +1050,7 @@ class App:
         except IndexError:
             self.label_status_hapus.config(
                 text="Index berada di luar batas data.",
-                fg="#DC2626"
+                fg="#D98B8B"
             )
             return
 
@@ -1060,7 +1065,7 @@ class App:
                 f"Pesanan {oid} berhasil dihapus.\n"
                 f"Total data sekarang: {self.array.size}"
             ),
-            fg="#16A34A"
+            fg="#78A889"
         )
 
         self.input_index_hapus.delete(0, tk.END)
@@ -1097,7 +1102,7 @@ class App:
             text=subjudul,
             font=("Arial", 11),
             bg=self.bg_utama,
-            fg="#64748B"
+            fg="#8A8196"
         ).pack(
             anchor="w",
             pady=(5, 0)
@@ -1109,7 +1114,7 @@ class App:
             bg=self.bg_card,
             width=200,
             height=90,
-            highlightbackground="#E2E8F0",
+            highlightbackground="#E7DEEE",
             highlightthickness=1
         )
         card.pack(
@@ -1126,7 +1131,7 @@ class App:
             text=judul,
             font=("Arial", 9, "bold"),
             bg=self.bg_card,
-            fg="#64748B"
+            fg="#8A8196"
         ).pack(
             anchor="w",
             padx=15,
