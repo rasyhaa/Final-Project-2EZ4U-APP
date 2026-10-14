@@ -1,7 +1,3 @@
-"""M3 - Laporan Terurut: sorting dan searching manual sesuai brief 2EZ4U.
-
-Tidak menggunakan sorted(), list.sort(), bisect, dictionary, set, atau heapq.
-"""
 import time
 
 

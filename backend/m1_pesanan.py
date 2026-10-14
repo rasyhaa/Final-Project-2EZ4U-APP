@@ -241,3 +241,57 @@ def load_pesanan(nama_file):
             linked_list.append(pesanan)
 
     return array, linked_list
+
+
+def simpan_pesanan(nama_file, pesanan):
+    """Tambahkan satu pesanan ke CSV tanpa menghapus data yang sudah ada."""
+    with open(nama_file, "a", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+        t_selesai = "" if pesanan.t_selesai_detik is None else pesanan.t_selesai_detik
+        writer.writerow([
+            pesanan.oid,
+            pesanan.pelanggan,
+            pesanan.resto,
+            pesanan.menu,
+            int(pesanan.harga),
+            pesanan.prioritas,
+            int(pesanan.t_masuk_detik),
+            t_selesai,
+            pesanan.status
+        ])
+
+
+def cari_oid(array, oid):
+    """Mengembalikan index pesanan berdasarkan OID, atau -1 jika tidak ada."""
+    target = str(oid).strip()
+    for indeks in range(array.size):
+        if str(array.get(indeks).oid).strip() == target:
+            return indeks
+    return -1
+
+
+def tambah_pesanan(array, linked_list, pesanan, jenis, nama_file=None):
+    """
+    Tambahkan pesanan ke Array dan Linked List secara sinkron.
+    Jika nama_file diberikan, pesanan juga disimpan ke CSV.
+    Mengembalikan True jika berhasil; OID duplikat ditolak.
+    """
+    if cari_oid(array, pesanan.oid) >= 0:
+        raise ValueError("OID sudah digunakan.")
+
+    jenis = str(jenis).strip().upper()
+    if jenis == "REGULER":
+        array.tambah_reguler(pesanan)
+        linked_list.tambah_reguler(pesanan)
+    elif jenis == "PRIORITAS":
+        array.tambah_prioritas(pesanan)
+        linked_list.tambah_prioritas(pesanan)
+    elif jenis == "VIP":
+        array.tambah_vip(pesanan)
+        linked_list.tambah_vip(pesanan)
+    else:
+        raise ValueError("Jenis pesanan harus REGULER, PRIORITAS, atau VIP.")
+
+    if nama_file is not None:
+        simpan_pesanan(nama_file, pesanan)
+    return True

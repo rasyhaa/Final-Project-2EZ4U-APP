@@ -4,7 +4,7 @@ import time
 
 from backend.m3_laporan import insertion_sort, merge_sort, linear_search, binary_search
 
-from backend.m1_pesanan import load_pesanan, Pesanan
+from backend.m1_pesanan import load_pesanan, Pesanan, tambah_pesanan as backend_tambah_pesanan
 from backend.m2_antrean import (
     Stack,
     AntreanNaif,
@@ -14,43 +14,6 @@ from backend.m2_antrean import (
     evaluasi_postfix,
     hitung_postfix_dengan_langkah
 )
-
-
-class RoundedFrame(tk.Frame):
-    """Frame dengan latar dan garis tepi bersudut membulat."""
-    def __init__(self, master, bg="#FFFFFF", highlightbackground="#E7DEEE",
-                 highlightthickness=1, radius=16, **kwargs):
-        parent_bg = master.cget("bg") if "bg" in master.keys() else "#FFF9F4"
-        super().__init__(master, bg=parent_bg, bd=0, highlightthickness=0, **kwargs)
-        self._card_bg = bg
-        self._border_color = highlightbackground
-        self._border_width = highlightthickness
-        self._radius = radius
-        self._canvas = tk.Canvas(self, bg=parent_bg, bd=0,
-                                 highlightthickness=0, relief="flat")
-        self._canvas.place(x=0, y=0, relwidth=1, relheight=1)
-        # Turunkan widget Canvas ke belakang agar isi Frame tetap terlihat.
-        self.tk.call("lower", self._canvas._w)
-        self.bind("<Configure>", self._draw_rounded_background)
-
-    def _draw_rounded_background(self, event=None):
-        self._canvas.delete("rounded-card")
-        width = max(self.winfo_width(), 2)
-        height = max(self.winfo_height(), 2)
-        radius = min(self._radius, width // 2, height // 2)
-        border = self._border_width
-        x1, y1, x2, y2 = border, border, width - border, height - border
-        points = [
-            x1 + radius, y1, x2 - radius, y1,
-            x2, y1, x2, y1 + radius, x2, y2 - radius,
-            x2, y2, x2 - radius, y2, x1 + radius, y2,
-            x1, y2, x1, y2 - radius, x1, y1 + radius, x1, y1
-        ]
-        self._canvas.create_polygon(
-            points, smooth=True, splinesteps=24,
-            fill=self._card_bg, outline=self._border_color,
-            width=border, tags="rounded-card"
-        )
 
 
 class App:
@@ -415,8 +378,9 @@ class App:
             fg="#5E5870",
             activebackground="#EADFF3",
             activeforeground="#4A4458",
-            relief="solid",
-            bd=1,
+            relief="flat",
+            bd=0,
+            highlightthickness=0,
             padx=8,
             pady=6,
             cursor="hand2",
@@ -495,7 +459,7 @@ class App:
         )
 
         # AREA INFORMASI
-        info = RoundedFrame(
+        info = tk.Frame(
             self.content,
             bg=self.bg_card,
             highlightbackground="#E7DEEE",
@@ -580,7 +544,7 @@ class App:
         )
 
         # TEST GET
-        frame_get = RoundedFrame(
+        frame_get = tk.Frame(
             self.content,
             bg=self.bg_card,
             highlightbackground="#E7DEEE",
@@ -750,7 +714,7 @@ class App:
         )
 
         # TEST GET
-        frame_get = RoundedFrame(
+        frame_get = tk.Frame(
             self.content,
             bg=self.bg_card,
             highlightbackground="#E7DEEE",
@@ -888,7 +852,7 @@ class App:
             "Tambahkan pesanan baru ke Array dan Linked List."
         )
 
-        card = RoundedFrame(
+        card = tk.Frame(
             self.content,
             bg=self.bg_card,
             highlightbackground="#E7DEEE",
@@ -1004,7 +968,7 @@ class App:
         )
 
     def tambah_pesanan(self):
-        jenis = self.input_jenis.get().strip()
+        jenis = self.input_jenis.get().strip().upper()
         oid = self.input_oid.get().strip()
         pelanggan = self.input_pelanggan.get().strip()
         resto = self.input_resto.get().strip()
@@ -1013,53 +977,70 @@ class App:
 
         if not all([jenis, oid, pelanggan, resto, menu, harga_text]):
             self.label_status_tambah.config(
-                text="Semua field wajib diisi.",
-                fg="#D98B8B"
+                text="Semua field wajib diisi.", fg="#D98B8B"
             )
             return
 
         try:
-            harga = float(harga_text)
+            harga_float = float(harga_text)
+            if harga_float < 0:
+                raise ValueError
+            harga = int(harga_float)
         except ValueError:
             self.label_status_tambah.config(
-                text="Harga harus berupa angka.",
-                fg="#D98B8B"
+                text="Harga harus berupa angka nonnegatif.", fg="#D98B8B"
             )
             return
 
-        # Buat satu object Pesanan, lalu masukkan object yang sama
-        # ke kedua struktur agar data tetap sinkron.
-        prioritas = jenis
+        # Validasi OID sebelum mengubah struktur data atau CSV.
+        for indeks in range(self.array.size):
+            if str(self.array.get(indeks).oid).strip() == oid:
+                self.label_status_tambah.config(
+                    text=f"OID {oid} sudah digunakan. Gunakan OID yang berbeda.",
+                    fg="#D98B8B"
+                )
+                return
+
+        # Format CSV memakai prioritas numerik: VIP=1, PRIORITAS=2, REGULER=3.
+        nomor_prioritas = 1 if jenis == "VIP" else 2 if jenis == "PRIORITAS" else 3
+        if jenis not in ("REGULER", "PRIORITAS", "VIP"):
+            self.label_status_tambah.config(
+                text="Jenis pesanan tidak valid.", fg="#D98B8B"
+            )
+            return
+
         pesanan_baru = Pesanan(
-            oid,
-            pelanggan,
-            resto,
-            menu,
-            harga,
-            prioritas,
-            0,
-            None,
-            "Menunggu"
+            oid, pelanggan, resto, menu, harga,
+            nomor_prioritas, 0, None, "ANTRE"
         )
 
-        if jenis == "REGULER":
-            self.array.tambah_reguler(pesanan_baru)
-            self.linked_list.tambah_reguler(pesanan_baru)
-        elif jenis == "PRIORITAS":
-            self.array.tambah_prioritas(pesanan_baru)
-            self.linked_list.tambah_prioritas(pesanan_baru)
-        else:
-            self.array.tambah_vip(pesanan_baru)
-            self.linked_list.tambah_vip(pesanan_baru)
+        try:
+            # Data masuk ke Array, Linked List, dan CSV melalui backend yang sama.
+            backend_tambah_pesanan(
+                self.array,
+                self.linked_list,
+                pesanan_baru,
+                jenis,
+                "data/pesanan.csv"
+            )
+        except (ValueError, OSError, IndexError) as error:
+            self.label_status_tambah.config(
+                text=f"Pesanan gagal disimpan: {error}", fg="#D98B8B"
+            )
+            return
+
+        # Data OID untuk Binary Search harus dibangun ulang setelah ada data baru.
+        self._m3_data_urut_oid = None
+        self._m3_perbandingan_bangun_oid = 0
+        self._m3_waktu_bangun_oid = 0.0
 
         self.label_status_tambah.config(
             text=(
-                f"Pesanan {oid} berhasil ditambahkan sebagai {jenis}.\n"
+                f"Pesanan {oid} berhasil ditambahkan sebagai {jenis} dan disimpan ke CSV.\n"
                 f"Total data sekarang: {self.array.size}"
             ),
             fg="#78A889"
         )
-
         self._kosongkan_form_tambah()
 
     def _kosongkan_form_tambah(self):
@@ -1084,7 +1065,7 @@ class App:
             "Hapus pesanan berdasarkan index dari Array dan Linked List."
         )
 
-        card = RoundedFrame(
+        card = tk.Frame(
             self.content,
             bg=self.bg_card,
             highlightbackground="#E7DEEE",
@@ -1225,7 +1206,7 @@ class App:
         self._m2_table_heading = ""
         self._buat_header(judul, deskripsi)
 
-        control = RoundedFrame(self.content, bg=self.bg_card,
+        control = tk.Frame(self.content, bg=self.bg_card,
                            highlightbackground="#E7DEEE", highlightthickness=1)
         control.pack(fill="x", padx=22, pady=(4, 8))
         tk.Label(control, text=judul, font=("Arial", 11, "bold"),
@@ -1296,7 +1277,7 @@ class App:
         )
         self.label_status_antrean.pack(fill="x", padx=22, pady=(0, 6))
 
-        table_card = RoundedFrame(self.content, bg=self.bg_card,
+        table_card = tk.Frame(self.content, bg=self.bg_card,
                               highlightbackground="#E7DEEE", highlightthickness=1)
         table_card.pack(fill="both", expand=True, padx=22, pady=(0, 6))
         self.label_m2_table_title = tk.Label(table_card, text=self._m2_table_heading,
@@ -1325,7 +1306,7 @@ class App:
             justify="left", anchor="w", wraplength=900, padx=10, pady=5
         )
         self.label_status_ringkas_m2.pack(fill="x", padx=22, pady=(0, 4))
-        cmd = RoundedFrame(self.content, bg=self.bg_card,
+        cmd = tk.Frame(self.content, bg=self.bg_card,
                        highlightbackground="#E7DEEE", highlightthickness=1)
         cmd.pack(fill="x", padx=22, pady=(0, 8))
         tk.Label(cmd, text="COMMAND / RIWAYAT OPERASI", font=("Arial", 8, "bold"),
@@ -1599,7 +1580,7 @@ class App:
         self._bersihkan_content()
         self._buat_header("M2 — Stack: Hitung Struk Lewat Postfix",
                           "Konversi infix ke postfix menggunakan stack operator, lalu evaluasi postfix dengan stack angka.")
-        control = RoundedFrame(self.content, bg=self.bg_card,
+        control = tk.Frame(self.content, bg=self.bg_card,
                            highlightbackground="#E7DEEE", highlightthickness=1)
         control.pack(fill="x", padx=22, pady=(4, 8))
         tk.Label(control, text="Struk belanja (infix)", font=("Arial", 10, "bold"),
@@ -1616,13 +1597,13 @@ class App:
             anchor="w", padx=10, pady=6
         )
         self.label_hasil_kalkulator.pack(fill="x", padx=22, pady=(0, 6))
-        card = RoundedFrame(self.content, bg=self.bg_card,
+        card = tk.Frame(self.content, bg=self.bg_card,
                         highlightbackground="#E7DEEE", highlightthickness=1)
         card.pack(fill="both", expand=True, padx=22, pady=(0, 7))
         tk.Label(card, text="LANGKAH STACK (infix → postfix → evaluasi)",
                  font=("Arial", 10, "bold"), bg=self.bg_card,
                  fg=self.text_utama).pack(anchor="w", padx=10, pady=(6, 3))
-        wrap = RoundedFrame(card, bg=self.bg_card); wrap.pack(fill="both", expand=True, padx=8, pady=(0, 8))
+        wrap = tk.Frame(card, bg=self.bg_card); wrap.pack(fill="both", expand=True, padx=8, pady=(0, 8))
         cols=("langkah","token","tindakan","stack","output")
         self.tree_kasir = ttk.Treeview(wrap, columns=cols, show="headings", height=13)
         for col, title, width in [
@@ -1727,8 +1708,8 @@ class App:
     def _halaman_m3_base(self, judul, deskripsi):
         self._bersihkan_content()
         self._buat_header(judul, deskripsi)
-        card = RoundedFrame(self.content, bg=self.bg_card,
-                            highlightbackground="#E7DEEE", highlightthickness=1, radius=16)
+        card = tk.Frame(self.content, bg=self.bg_card,
+                        highlightbackground="#E7DEEE", highlightthickness=1)
         card.pack(fill="x", padx=22, pady=(4, 10))
         return card
 
@@ -1963,7 +1944,7 @@ class App:
         )
 
     def buat_card(self, parent, judul, nilai):
-        card = RoundedFrame(
+        card = tk.Frame(
             parent,
             bg=self.bg_card,
             width=200,

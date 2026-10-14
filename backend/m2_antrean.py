@@ -1,19 +1,3 @@
-"""
-Modul M2 - Struktur Data Antrean dan Stack
-2EZ4U APP - EC234303
-
-Implementasi:
-- Stack berbasis array dinamis buatan sendiri (tanpa list.pop sebagai struktur stack).
-- AntreanNaif: dequeue menggeser elemen dan mencatat jumlah pergeseran.
-- AntreanMelingkar: circular queue dengan kapasitas yang dapat bertambah otomatis.
-- Konversi infix ke postfix dan evaluasi postfix dengan validasi.
-- Riwayat undo/redo berbasis aksi (bukan snapshot seluruh antrean).
-
-Tidak menggunakan dict, set, sorted(), list.sort(), heapq, bisect,
-collections, atau dictionary/set comprehension.
-"""
-
-
 class Stack:
     """Stack berbasis array dinamis dengan operasi push, pop, peek, dan kosong."""
 
