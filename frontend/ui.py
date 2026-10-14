@@ -16,6 +16,43 @@ from backend.m2_antrean import (
 )
 
 
+class RoundedFrame(tk.Frame):
+    """Frame dengan latar dan garis tepi bersudut membulat."""
+    def __init__(self, master, bg="#FFFFFF", highlightbackground="#E7DEEE",
+                 highlightthickness=1, radius=16, **kwargs):
+        parent_bg = master.cget("bg") if "bg" in master.keys() else "#FFF9F4"
+        super().__init__(master, bg=parent_bg, bd=0, highlightthickness=0, **kwargs)
+        self._card_bg = bg
+        self._border_color = highlightbackground
+        self._border_width = highlightthickness
+        self._radius = radius
+        self._canvas = tk.Canvas(self, bg=parent_bg, bd=0,
+                                 highlightthickness=0, relief="flat")
+        self._canvas.place(x=0, y=0, relwidth=1, relheight=1)
+        # Turunkan widget Canvas ke belakang agar isi Frame tetap terlihat.
+        self.tk.call("lower", self._canvas._w)
+        self.bind("<Configure>", self._draw_rounded_background)
+
+    def _draw_rounded_background(self, event=None):
+        self._canvas.delete("rounded-card")
+        width = max(self.winfo_width(), 2)
+        height = max(self.winfo_height(), 2)
+        radius = min(self._radius, width // 2, height // 2)
+        border = self._border_width
+        x1, y1, x2, y2 = border, border, width - border, height - border
+        points = [
+            x1 + radius, y1, x2 - radius, y1,
+            x2, y1, x2, y1 + radius, x2, y2 - radius,
+            x2, y2, x2 - radius, y2, x1 + radius, y2,
+            x1, y2, x1, y2 - radius, x1, y1 + radius, x1, y1
+        ]
+        self._canvas.create_polygon(
+            points, smooth=True, splinesteps=24,
+            fill=self._card_bg, outline=self._border_color,
+            width=border, tags="rounded-card"
+        )
+
+
 class App:
     def __init__(self, root):
         self.root = root
@@ -24,9 +61,7 @@ class App:
         self.root.geometry("1200x700")
         self.root.minsize(1000, 600)
 
-        # =========================
         # LOAD DATA
-        # =========================
         self.array, self.linked_list = load_pesanan(
             "data/pesanan.csv"
         )
@@ -34,9 +69,7 @@ class App:
         # Struktur data aktif
         self.struktur = "Array"
 
-        # =========================
         # M2 - ANTREAN
-        # =========================
         self.stack_m2 = Stack()
         self._m2_last_rows = []
         self._m2_table_heading = "DATA PESANAN TERKAIT OPERASI"
@@ -69,9 +102,7 @@ class App:
         self._m3_waktu_bangun_oid = 0.0
         self._m3_perbandingan_bangun_oid = 0
 
-        # =========================
         # WARNA
-        # =========================
         self.bg_sidebar = "#E9E1F5"
         self.bg_utama = "#FFF9F4"
         self.bg_card = "#FFFFFF"
@@ -81,9 +112,7 @@ class App:
         self.buat_layout()
 
     def buat_layout(self):
-        # ============================================================
         # CONTAINER UTAMA
-        # ============================================================
         self.container = tk.Frame(
             self.root,
             bg=self.bg_utama
@@ -93,9 +122,7 @@ class App:
             expand=True
         )
 
-        # ============================================================
         # SIDEBAR KIRI - M1 SAJA
-        # ============================================================
         self.sidebar = tk.Frame(
             self.container,
             width=300,
@@ -226,9 +253,7 @@ class App:
         menu_frame.bind("<Enter>", _aktifkan_scroll)
         menu_frame.bind("<Leave>", _matikan_scroll)
 
-        # ============================================================
         # DATA
-        # ============================================================
         tk.Label(
             menu_frame,
             text="DATA",
@@ -247,9 +272,7 @@ class App:
             self.muat_data
         )
 
-        # ============================================================
         # M1 - DATA PESANAN
-        # ============================================================
         tk.Label(
             menu_frame,
             text="M1 - DATA PESANAN",
@@ -314,9 +337,7 @@ class App:
             self.halaman_hapus
         )
 
-        # ============================================================
         # M2 - ANTREAN
-        # ============================================================
         tk.Label(
             menu_frame,
             text="M2 - ANTREAN",
@@ -357,9 +378,7 @@ class App:
             self.menu_dequeue_circular_m2
         )
 
-        # ============================================================
         # M3 - LAPORAN TERURUT
-        # ============================================================
         tk.Label(
             menu_frame,
             text="M3 - LAPORAN TERURUT",
@@ -373,9 +392,7 @@ class App:
         self._buat_menu_button(menu_frame, "LINEAR SEARCH", self.halaman_m3_linear)
         self._buat_menu_button(menu_frame, "BINARY SEARCH", self.halaman_m3_binary)
 
-        # ============================================================
         # CONTENT AREA
-        # ============================================================
         self.content = tk.Frame(
             self.container,
             bg=self.bg_utama
@@ -422,9 +439,7 @@ class App:
     def halaman_m1(self):
         self._bersihkan_content()
 
-        # =========================
         # HEADER
-        # =========================
         header = tk.Frame(
             self.content,
             bg=self.bg_utama
@@ -451,9 +466,7 @@ class App:
             fg="#8A8196"
         ).pack(anchor="w", pady=(5, 0))
 
-        # =========================
         # CARD INFORMASI
-        # =========================
         frame_card = tk.Frame(
             self.content,
             bg=self.bg_utama
@@ -481,10 +494,8 @@ class App:
             str(self.linked_list.size)
         )
 
-        # =========================
         # AREA INFORMASI
-        # =========================
-        info = tk.Frame(
+        info = RoundedFrame(
             self.content,
             bg=self.bg_card,
             highlightbackground="#E7DEEE",
@@ -531,9 +542,7 @@ class App:
         for widget in self.content.winfo_children():
             widget.destroy()
 
-        # =========================
         # HEADER
-        # =========================
         tk.Label(
             self.content,
             text="Array",
@@ -557,9 +566,7 @@ class App:
             padx=35
         )
 
-        # =========================
         # INFO
-        # =========================
         tk.Label(
             self.content,
             text=f"Jumlah data: {self.array.size}",
@@ -572,10 +579,8 @@ class App:
             pady=20
         )
 
-        # =========================
         # TEST GET
-        # =========================
-        frame_get = tk.Frame(
+        frame_get = RoundedFrame(
             self.content,
             bg=self.bg_card,
             highlightbackground="#E7DEEE",
@@ -707,9 +712,7 @@ class App:
         for widget in self.content.winfo_children():
             widget.destroy()
 
-        # =========================
         # HEADER
-        # =========================
         tk.Label(
             self.content,
             text="Linked List",
@@ -733,9 +736,7 @@ class App:
             padx=35
         )
 
-        # =========================
         # INFO
-        # =========================
         tk.Label(
             self.content,
             text=f"Jumlah data: {self.linked_list.size}",
@@ -748,10 +749,8 @@ class App:
             pady=20
         )
 
-        # =========================
         # TEST GET
-        # =========================
-        frame_get = tk.Frame(
+        frame_get = RoundedFrame(
             self.content,
             bg=self.bg_card,
             highlightbackground="#E7DEEE",
@@ -879,9 +878,7 @@ class App:
             )
 
 
-    # ============================================================
     # HALAMAN TAMBAH PESANAN
-    # ============================================================
 
     def halaman_tambah(self, jenis_awal=None):
         self._bersihkan_content()
@@ -891,7 +888,7 @@ class App:
             "Tambahkan pesanan baru ke Array dan Linked List."
         )
 
-        card = tk.Frame(
+        card = RoundedFrame(
             self.content,
             bg=self.bg_card,
             highlightbackground="#E7DEEE",
@@ -1077,9 +1074,7 @@ class App:
 
         self.input_jenis.set("REGULER")
 
-    # ============================================================
     # HALAMAN HAPUS PESANAN
-    # ============================================================
 
     def halaman_hapus(self):
         self._bersihkan_content()
@@ -1089,7 +1084,7 @@ class App:
             "Hapus pesanan berdasarkan index dari Array dan Linked List."
         )
 
-        card = tk.Frame(
+        card = RoundedFrame(
             self.content,
             bg=self.bg_card,
             highlightbackground="#E7DEEE",
@@ -1204,9 +1199,7 @@ class App:
         self.input_index_hapus.delete(0, tk.END)
 
 
-    # ============================================================
     # M2 - ANTREAN
-    # ============================================================
 
     def menu_undo_m2(self):
         self.halaman_m2_undo()
@@ -1232,7 +1225,7 @@ class App:
         self._m2_table_heading = ""
         self._buat_header(judul, deskripsi)
 
-        control = tk.Frame(self.content, bg=self.bg_card,
+        control = RoundedFrame(self.content, bg=self.bg_card,
                            highlightbackground="#E7DEEE", highlightthickness=1)
         control.pack(fill="x", padx=22, pady=(4, 8))
         tk.Label(control, text=judul, font=("Arial", 11, "bold"),
@@ -1303,7 +1296,7 @@ class App:
         )
         self.label_status_antrean.pack(fill="x", padx=22, pady=(0, 6))
 
-        table_card = tk.Frame(self.content, bg=self.bg_card,
+        table_card = RoundedFrame(self.content, bg=self.bg_card,
                               highlightbackground="#E7DEEE", highlightthickness=1)
         table_card.pack(fill="both", expand=True, padx=22, pady=(0, 6))
         self.label_m2_table_title = tk.Label(table_card, text=self._m2_table_heading,
@@ -1332,7 +1325,7 @@ class App:
             justify="left", anchor="w", wraplength=900, padx=10, pady=5
         )
         self.label_status_ringkas_m2.pack(fill="x", padx=22, pady=(0, 4))
-        cmd = tk.Frame(self.content, bg=self.bg_card,
+        cmd = RoundedFrame(self.content, bg=self.bg_card,
                        highlightbackground="#E7DEEE", highlightthickness=1)
         cmd.pack(fill="x", padx=22, pady=(0, 8))
         tk.Label(cmd, text="COMMAND / RIWAYAT OPERASI", font=("Arial", 8, "bold"),
@@ -1606,7 +1599,7 @@ class App:
         self._bersihkan_content()
         self._buat_header("M2 — Stack: Hitung Struk Lewat Postfix",
                           "Konversi infix ke postfix menggunakan stack operator, lalu evaluasi postfix dengan stack angka.")
-        control = tk.Frame(self.content, bg=self.bg_card,
+        control = RoundedFrame(self.content, bg=self.bg_card,
                            highlightbackground="#E7DEEE", highlightthickness=1)
         control.pack(fill="x", padx=22, pady=(4, 8))
         tk.Label(control, text="Struk belanja (infix)", font=("Arial", 10, "bold"),
@@ -1623,13 +1616,13 @@ class App:
             anchor="w", padx=10, pady=6
         )
         self.label_hasil_kalkulator.pack(fill="x", padx=22, pady=(0, 6))
-        card = tk.Frame(self.content, bg=self.bg_card,
+        card = RoundedFrame(self.content, bg=self.bg_card,
                         highlightbackground="#E7DEEE", highlightthickness=1)
         card.pack(fill="both", expand=True, padx=22, pady=(0, 7))
         tk.Label(card, text="LANGKAH STACK (infix → postfix → evaluasi)",
                  font=("Arial", 10, "bold"), bg=self.bg_card,
                  fg=self.text_utama).pack(anchor="w", padx=10, pady=(6, 3))
-        wrap = tk.Frame(card, bg=self.bg_card); wrap.pack(fill="both", expand=True, padx=8, pady=(0, 8))
+        wrap = RoundedFrame(card, bg=self.bg_card); wrap.pack(fill="both", expand=True, padx=8, pady=(0, 8))
         cols=("langkah","token","tindakan","stack","output")
         self.tree_kasir = ttk.Treeview(wrap, columns=cols, show="headings", height=13)
         for col, title, width in [
@@ -1726,9 +1719,7 @@ class App:
         except Exception as error:
             self.label_hasil_kalkulator.config(text=f"Ekspresi tidak valid: {error}",fg="#D98B8B")
 
-    # ============================================================
     # M3 - LAPORAN TERURUT
-    # ============================================================
 
     def _data_m3(self):
         return [self.array.get(i) for i in range(self.array.size)]
@@ -1736,8 +1727,8 @@ class App:
     def _halaman_m3_base(self, judul, deskripsi):
         self._bersihkan_content()
         self._buat_header(judul, deskripsi)
-        card = tk.Frame(self.content, bg=self.bg_card,
-                        highlightbackground="#E7DEEE", highlightthickness=1)
+        card = RoundedFrame(self.content, bg=self.bg_card,
+                            highlightbackground="#E7DEEE", highlightthickness=1, radius=16)
         card.pack(fill="x", padx=22, pady=(4, 10))
         return card
 
@@ -1935,9 +1926,7 @@ class App:
     def halaman_m3_binary(self):
         self._halaman_m3_search(True)
 
-    # ============================================================
     # HELPER UI
-    # ============================================================
 
     def _bersihkan_content(self):
         for widget in self.content.winfo_children():
@@ -1974,7 +1963,7 @@ class App:
         )
 
     def buat_card(self, parent, judul, nilai):
-        card = tk.Frame(
+        card = RoundedFrame(
             parent,
             bg=self.bg_card,
             width=200,
