@@ -4,7 +4,7 @@ import time
 
 from backend.m3_laporan import insertion_sort, merge_sort, linear_search, binary_search
 
-from backend.m1_pesanan import load_pesanan, Pesanan, tambah_pesanan as backend_tambah_pesanan
+from backend.m1_pesanan import load_pesanan, Pesanan
 from backend.m2_antrean import (
     Stack,
     AntreanNaif,
@@ -66,11 +66,11 @@ class App:
         self._m3_perbandingan_bangun_oid = 0
 
         # WARNA
-        self.bg_sidebar = "#E9E1F5"
-        self.bg_utama = "#FFF9F4"
+        self.bg_sidebar = "#FFFFFF"
+        self.bg_utama = "#FFFFFF"
         self.bg_card = "#FFFFFF"
-        self.text_utama = "#4A4458"
-        self.text_sidebar = "#5E5870"
+        self.text_utama = "#222222"
+        self.text_sidebar = "#333333"
 
         self.buat_layout()
 
@@ -100,7 +100,7 @@ class App:
         # Header aplikasi
         header_sidebar = tk.Frame(
             self.sidebar,
-            bg="#D8CBEA",
+            bg="#FFFFFF",
             height=70
         )
         header_sidebar.pack(fill="x")
@@ -110,8 +110,8 @@ class App:
             header_sidebar,
             text="2EZ4U Food Delivery",
             font=("Arial", 14, "bold"),
-            bg="#D8CBEA",
-            fg="#4A4458"
+            bg="#FFFFFF",
+            fg="#222222"
         ).pack(
             anchor="w",
             padx=15,
@@ -122,8 +122,8 @@ class App:
             header_sidebar,
             text="M1 • DATA PESANAN",
             font=("Arial", 8),
-            bg="#D8CBEA",
-            fg="#7A6E86"
+            bg="#FFFFFF",
+            fg="#666666"
         ).pack(
             anchor="w",
             padx=15,
@@ -222,7 +222,7 @@ class App:
             text="DATA",
             font=("Arial", 9, "bold"),
             bg=self.bg_sidebar,
-            fg="#8A8196"
+            fg="#666666"
         ).pack(
             anchor="w",
             padx=12,
@@ -241,7 +241,7 @@ class App:
             text="M1 - DATA PESANAN",
             font=("Arial", 9, "bold"),
             bg=self.bg_sidebar,
-            fg="#8A8196"
+            fg="#666666"
         ).pack(
             anchor="w",
             padx=12,
@@ -306,7 +306,7 @@ class App:
             text="M2 - ANTREAN",
             font=("Arial", 9, "bold"),
             bg=self.bg_sidebar,
-            fg="#8A8196"
+            fg="#666666"
         ).pack(anchor="w", padx=12, pady=(12, 5))
 
         # Menu M2 dibuat persis mengikuti brief.
@@ -347,7 +347,7 @@ class App:
             text="M3 - LAPORAN TERURUT",
             font=("Arial", 9, "bold"),
             bg=self.bg_sidebar,
-            fg="#8A8196"
+            fg="#666666"
         ).pack(anchor="w", padx=12, pady=(12, 5))
 
         self._buat_menu_button(menu_frame, "INSERTION SORT", self.halaman_m3_insertion)
@@ -374,10 +374,10 @@ class App:
             text=text,
             anchor="w",
             font=("Arial", 9),
-            bg="#FDFBFF",
-            fg="#5E5870",
-            activebackground="#EADFF3",
-            activeforeground="#4A4458",
+            bg="#FFFFFF",
+            fg="#333333",
+            activebackground="#EEEEEE",
+            activeforeground="#222222",
             relief="flat",
             bd=0,
             highlightthickness=0,
@@ -427,7 +427,7 @@ class App:
             text="Implementasi Array dan Linked List",
             font=("Arial", 11),
             bg=self.bg_utama,
-            fg="#8A8196"
+            fg="#666666"
         ).pack(anchor="w", pady=(5, 0))
 
         # CARD INFORMASI
@@ -462,7 +462,7 @@ class App:
         info = tk.Frame(
             self.content,
             bg=self.bg_card,
-            highlightbackground="#E7DEEE",
+            highlightbackground="#D9D9D9",
             highlightthickness=1
         )
         info.pack(
@@ -495,7 +495,7 @@ class App:
             font=("Arial", 11),
             justify="left",
             bg=self.bg_card,
-            fg="#6B6478"
+            fg="#444444"
         ).pack(
             anchor="w",
             padx=25
@@ -524,7 +524,7 @@ class App:
             text="Data pesanan yang disimpan menggunakan struktur Array",
             font=("Arial", 11),
             bg=self.bg_utama,
-            fg="#8A8196"
+            fg="#666666"
         ).pack(
             anchor="w",
             padx=35
@@ -547,7 +547,7 @@ class App:
         frame_get = tk.Frame(
             self.content,
             bg=self.bg_card,
-            highlightbackground="#E7DEEE",
+            highlightbackground="#D9D9D9",
             highlightthickness=1
         )
         frame_get.pack(
@@ -596,9 +596,9 @@ class App:
         tk.Button(
             frame_input,
             text="GET",
-            bg="#D8CBEA",
-            fg="#4A4458",
-            activebackground="#CBB8E0",
+            bg="#FFFFFF",
+            fg="#222222",
+            activebackground="#E0E0E0",
             relief="flat",
             bd=0,
             padx=14,
@@ -611,7 +611,7 @@ class App:
             frame_get,
             text="Masukkan index kemudian tekan GET.",
             bg=self.bg_card,
-            fg="#6B6478",
+            fg="#444444",
             justify="left"
         )
         self.label_hasil_array.pack(
@@ -625,7 +625,7 @@ class App:
             text="Waktu proses Array: -",
             font=("Arial", 9, "bold"),
             bg=self.bg_card,
-            fg="#9B7EBD"
+            fg="#444444"
         )
         self.label_waktu_array.pack(
             anchor="w",
@@ -694,7 +694,7 @@ class App:
             text="Data pesanan yang disimpan menggunakan struktur Linked List",
             font=("Arial", 11),
             bg=self.bg_utama,
-            fg="#8A8196"
+            fg="#666666"
         ).pack(
             anchor="w",
             padx=35
@@ -717,7 +717,7 @@ class App:
         frame_get = tk.Frame(
             self.content,
             bg=self.bg_card,
-            highlightbackground="#E7DEEE",
+            highlightbackground="#D9D9D9",
             highlightthickness=1
         )
         frame_get.pack(
@@ -766,9 +766,9 @@ class App:
         tk.Button(
             frame_input,
             text="GET",
-            bg="#D8CBEA",
-            fg="#4A4458",
-            activebackground="#CBB8E0",
+            bg="#FFFFFF",
+            fg="#222222",
+            activebackground="#E0E0E0",
             relief="flat",
             bd=0,
             padx=14,
@@ -781,7 +781,7 @@ class App:
             frame_get,
             text="Masukkan index kemudian tekan GET.",
             bg=self.bg_card,
-            fg="#6B6478",
+            fg="#444444",
             justify="left"
         )
         self.label_hasil_linked.pack(
@@ -795,7 +795,7 @@ class App:
             text="Waktu proses Linked List: -",
             font=("Arial", 9, "bold"),
             bg=self.bg_card,
-            fg="#9B7EBD"
+            fg="#444444"
         )
         self.label_waktu_linked.pack(
             anchor="w",
@@ -855,7 +855,7 @@ class App:
         card = tk.Frame(
             self.content,
             bg=self.bg_card,
-            highlightbackground="#E7DEEE",
+            highlightbackground="#D9D9D9",
             highlightthickness=1
         )
         card.pack(
@@ -911,7 +911,7 @@ class App:
                 text=label,
                 font=("Arial", 10, "bold"),
                 bg=self.bg_card,
-                fg="#6B6478"
+                fg="#444444"
             ).grid(
                 row=row,
                 column=0,
@@ -934,7 +934,7 @@ class App:
             text="",
             font=("Arial", 10),
             bg=self.bg_card,
-            fg="#6B6478",
+            fg="#444444",
             justify="left"
         )
         self.label_status_tambah.grid(
@@ -945,14 +945,15 @@ class App:
             padx=25,
             pady=(12, 5)
         )
+        self.label_status_tambah.configure(wraplength=620, justify="left", anchor="w")
 
         tk.Button(
             card,
             text="TAMBAH PESANAN",
             font=("Arial", 10, "bold"),
-            bg="#B79ACB",
+            bg="#333333",
             fg="white",
-            activebackground="#9F82B5",
+            activebackground="#555555",
             activeforeground="white",
             relief="flat",
             bd=0,
@@ -977,7 +978,7 @@ class App:
 
         if not all([jenis, oid, pelanggan, resto, menu, harga_text]):
             self.label_status_tambah.config(
-                text="Semua field wajib diisi.", fg="#D98B8B"
+                text="Semua field wajib diisi.", fg="#444444"
             )
             return
 
@@ -988,7 +989,7 @@ class App:
             harga = int(harga_float)
         except ValueError:
             self.label_status_tambah.config(
-                text="Harga harus berupa angka nonnegatif.", fg="#D98B8B"
+                text="Harga harus berupa angka nonnegatif.", fg="#444444"
             )
             return
 
@@ -997,7 +998,7 @@ class App:
             if str(self.array.get(indeks).oid).strip() == oid:
                 self.label_status_tambah.config(
                     text=f"OID {oid} sudah digunakan. Gunakan OID yang berbeda.",
-                    fg="#D98B8B"
+                    fg="#444444"
                 )
                 return
 
@@ -1005,7 +1006,7 @@ class App:
         nomor_prioritas = 1 if jenis == "VIP" else 2 if jenis == "PRIORITAS" else 3
         if jenis not in ("REGULER", "PRIORITAS", "VIP"):
             self.label_status_tambah.config(
-                text="Jenis pesanan tidak valid.", fg="#D98B8B"
+                text="Jenis pesanan tidak valid.", fg="#444444"
             )
             return
 
@@ -1014,18 +1015,21 @@ class App:
             nomor_prioritas, 0, None, "ANTRE"
         )
 
+        # Data hanya ditambahkan ke struktur data di memori.
+        # Tidak ada penulisan ke data/pesanan.csv.
         try:
-            # Data masuk ke Array, Linked List, dan CSV melalui backend yang sama.
-            backend_tambah_pesanan(
-                self.array,
-                self.linked_list,
-                pesanan_baru,
-                jenis,
-                "data/pesanan.csv"
-            )
-        except (ValueError, OSError, IndexError) as error:
+            if jenis == "REGULER":
+                self.array.tambah_reguler(pesanan_baru)
+                self.linked_list.tambah_reguler(pesanan_baru)
+            elif jenis == "PRIORITAS":
+                self.array.tambah_prioritas(pesanan_baru)
+                self.linked_list.tambah_prioritas(pesanan_baru)
+            elif jenis == "VIP":
+                self.array.tambah_vip(pesanan_baru)
+                self.linked_list.tambah_vip(pesanan_baru)
+        except (ValueError, IndexError) as error:
             self.label_status_tambah.config(
-                text=f"Pesanan gagal disimpan: {error}", fg="#D98B8B"
+                text=f"Pesanan gagal ditambahkan: {error}", fg="#444444"
             )
             return
 
@@ -1034,12 +1038,48 @@ class App:
         self._m3_perbandingan_bangun_oid = 0
         self._m3_waktu_bangun_oid = 0.0
 
+        # Cari indeks aktual pesanan baru pada Array.
+        indeks_array = -1
+        for i in range(self.array.size):
+            if str(self.array.get(i).oid).strip() == oid:
+                indeks_array = i
+                break
+
+        # Cari indeks aktual pesanan baru pada Linked List.
+        indeks_linked_list = -1
+        current = self.linked_list.head
+        i = 0
+        while current is not None:
+            if str(current.data.oid).strip() == oid:
+                indeks_linked_list = i
+                break
+            current = current.next
+            i += 1
+
+        if indeks_array >= 0 and indeks_linked_list >= 0:
+            pesan_konfirmasi = (
+                f"Pesanan {oid} berhasil ditambahkan sebagai {jenis}.\n"
+                f"Array: indeks {indeks_array} (urutan ke-{indeks_array + 1})\n"
+                f"Linked List: indeks {indeks_linked_list} "
+                f"(urutan ke-{indeks_linked_list + 1})\n"
+                f"Total data: {self.array.size}"
+            )
+            warna_status = "#222222"
+        else:
+            pesan_konfirmasi = (
+                f"Pesanan {oid} ditambahkan, tetapi posisi belum berhasil diverifikasi.\n"
+                f"Array: indeks {indeks_array}\n"
+                f"Linked List: indeks {indeks_linked_list}\n"
+                f"Total data: {self.array.size}"
+            )
+            warna_status = "#444444"
+
         self.label_status_tambah.config(
-            text=(
-                f"Pesanan {oid} berhasil ditambahkan sebagai {jenis} dan disimpan ke CSV.\n"
-                f"Total data sekarang: {self.array.size}"
-            ),
-            fg="#78A889"
+            text=pesan_konfirmasi,
+            fg=warna_status,
+            justify="left",
+            anchor="w",
+            wraplength=620
         )
         self._kosongkan_form_tambah()
 
@@ -1068,7 +1108,7 @@ class App:
         card = tk.Frame(
             self.content,
             bg=self.bg_card,
-            highlightbackground="#E7DEEE",
+            highlightbackground="#D9D9D9",
             highlightthickness=1
         )
         card.pack(
@@ -1101,7 +1141,7 @@ class App:
             text="Index:",
             font=("Arial", 10, "bold"),
             bg=self.bg_card,
-            fg="#6B6478"
+            fg="#444444"
         ).pack(side="left")
 
         self.input_index_hapus = tk.Entry(
@@ -1118,9 +1158,9 @@ class App:
             frame_input,
             text="HAPUS PESANAN",
             font=("Arial", 10, "bold"),
-            bg="#D98B8B",
+            bg="#444444",
             fg="white",
-            activebackground="#C87575",
+            activebackground="#666666",
             activeforeground="white",
             relief="flat",
             bd=0,
@@ -1135,7 +1175,7 @@ class App:
             text="Masukkan index yang ingin dihapus.",
             font=("Arial", 10),
             bg=self.bg_card,
-            fg="#6B6478",
+            fg="#444444",
             justify="left"
         )
         self.label_status_hapus.pack(
@@ -1150,7 +1190,7 @@ class App:
         except ValueError:
             self.label_status_hapus.config(
                 text="Index harus berupa angka.",
-                fg="#D98B8B"
+                fg="#444444"
             )
             return
 
@@ -1159,7 +1199,7 @@ class App:
         except IndexError:
             self.label_status_hapus.config(
                 text="Index berada di luar batas data.",
-                fg="#D98B8B"
+                fg="#444444"
             )
             return
 
@@ -1174,7 +1214,7 @@ class App:
                 f"Pesanan {oid} berhasil dihapus.\n"
                 f"Total data sekarang: {self.array.size}"
             ),
-            fg="#78A889"
+            fg="#222222"
         )
 
         self.input_index_hapus.delete(0, tk.END)
@@ -1207,7 +1247,7 @@ class App:
         self._buat_header(judul, deskripsi)
 
         control = tk.Frame(self.content, bg=self.bg_card,
-                           highlightbackground="#E7DEEE", highlightthickness=1)
+                           highlightbackground="#D9D9D9", highlightthickness=1)
         control.pack(fill="x", padx=22, pady=(4, 8))
         tk.Label(control, text=judul, font=("Arial", 11, "bold"),
                  bg=self.bg_card, fg=self.text_utama).pack(anchor="w", padx=14, pady=(8, 4))
@@ -1217,7 +1257,7 @@ class App:
                      fg=self.text_utama).pack(anchor="w", padx=14)
             self.input_antrean = tk.Entry(control, width=32, font=("Arial", 10))
             self.input_antrean.pack(anchor="w", padx=14, pady=4)
-            tk.Button(control, text="ENQUEUE", bg="#D8CBEA", fg=self.text_utama,
+            tk.Button(control, text="ENQUEUE", bg="#FFFFFF", fg=self.text_utama,
                       relief="flat", padx=18, command=self.enqueue_circular
                       ).pack(anchor="w", padx=14, pady=(0, 8))
             self._m2_table_heading = "Data pesanan yang ditambahkan ke belakang kedua antrean"
@@ -1227,7 +1267,7 @@ class App:
             tk.Label(control, text=("Dequeue naif menghapus elemen depan lalu menggeser semua sisa elemen."
                                    if jenis == "naif" else
                                    "Circular queue memajukan front dengan modulo; elemen lain tidak digeser."),
-                     bg=self.bg_card, fg="#6B6478", wraplength=850,
+                     bg=self.bg_card, fg="#444444", wraplength=850,
                      justify="left").pack(anchor="w", padx=14, pady=(0, 5))
             row = tk.Frame(control, bg=self.bg_card); row.pack(anchor="w", padx=14, pady=(0, 8))
             tk.Label(row, text="Jumlah dequeue:", bg=self.bg_card).pack(side="left")
@@ -1248,17 +1288,17 @@ class App:
                 self._m2_table_columns = ("nomor", "oid", "pelanggan", "resto", "menu", "masuk")
                 headings = (("nomor", "#", 40), ("oid", "oid", 95), ("pelanggan", "pelanggan", 125),
                             ("resto", "resto", 120), ("menu", "menu", 110), ("masuk", "masuk", 85))
-            tk.Button(row, text=btn, bg="#D8CBEA" if jenis == "circular" else "#2C4260",
+            tk.Button(row, text=btn, bg="#FFFFFF" if jenis == "circular" else "#333333",
                       fg=self.text_utama if jenis == "circular" else "white",
                       relief="flat", padx=12, command=command).pack(side="left", padx=5)
         elif jenis in ("undo", "redo"):
             label = ("Undo membatalkan aksi antrean terakhir dan memulihkan data yang terkena aksi."
                      if jenis == "undo" else
                      "Redo menjalankan kembali aksi yang sebelumnya dibatalkan.")
-            tk.Label(control, text=label, bg=self.bg_card, fg="#6B6478",
+            tk.Label(control, text=label, bg=self.bg_card, fg="#444444",
                      wraplength=850, justify="left").pack(anchor="w", padx=14, pady=(0, 6))
             tk.Button(control, text="UNDO" if jenis == "undo" else "REDO",
-                      bg="#2C4260", fg="white", relief="flat", padx=24,
+                      bg="#333333", fg="white", relief="flat", padx=24,
                       command=self.undo_antrean if jenis == "undo" else self.redo_antrean
                       ).pack(anchor="w", padx=14, pady=(0, 8))
             self._m2_table_heading = "Data pesanan yang dipulihkan" if jenis == "undo" else "Data pesanan yang dijalankan ulang"
@@ -1271,14 +1311,14 @@ class App:
             headings = (("nomor", "#", 40), ("hasil", "hasil", 500))
 
         self.label_status_antrean = tk.Label(
-            self.content, text="Siap menjalankan operasi.", bg="#F7F4E8",
+            self.content, text="Siap menjalankan operasi.", bg="#F5F5F5",
             fg=self.text_utama, justify="left", anchor="w", wraplength=900,
             padx=10, pady=6
         )
         self.label_status_antrean.pack(fill="x", padx=22, pady=(0, 6))
 
         table_card = tk.Frame(self.content, bg=self.bg_card,
-                              highlightbackground="#E7DEEE", highlightthickness=1)
+                              highlightbackground="#D9D9D9", highlightthickness=1)
         table_card.pack(fill="both", expand=True, padx=22, pady=(0, 6))
         self.label_m2_table_title = tk.Label(table_card, text=self._m2_table_heading,
                                              font=("Arial", 10, "bold"),
@@ -1307,12 +1347,12 @@ class App:
         )
         self.label_status_ringkas_m2.pack(fill="x", padx=22, pady=(0, 4))
         cmd = tk.Frame(self.content, bg=self.bg_card,
-                       highlightbackground="#E7DEEE", highlightthickness=1)
+                       highlightbackground="#D9D9D9", highlightthickness=1)
         cmd.pack(fill="x", padx=22, pady=(0, 8))
         tk.Label(cmd, text="COMMAND / RIWAYAT OPERASI", font=("Arial", 8, "bold"),
                  bg=self.bg_card, fg=self.text_utama).pack(anchor="w", padx=8, pady=(4, 1))
         self.text_m2_command = tk.Text(cmd, height=4, wrap="none", font=("Courier", 8),
-                                       bg="#FFFFFF", fg="#4A4458", relief="flat")
+                                       bg="#FFFFFF", fg="#222222", relief="flat")
         self.text_m2_command.pack(fill="x", padx=6, pady=(0, 5))
         self._render_tabel_m2()
         self.perbarui_antrean()
@@ -1397,7 +1437,7 @@ class App:
     def enqueue_circular(self):
         nilai = self.input_antrean.get().strip()
         if not nilai:
-            self.label_status_antrean.config(text="Isi ID/nama pesanan terlebih dahulu.", fg="#D98B8B")
+            self.label_status_antrean.config(text="Isi ID/nama pesanan terlebih dahulu.", fg="#444444")
             return
         mulai = time.perf_counter()
         berhasil = self.riwayat_antrean.enqueue(nilai)
@@ -1410,7 +1450,7 @@ class App:
         self.label_status_antrean.config(
             text=(f"{nilai} ditambahkan ke KEDUA antrean.\n"
                   f"Enqueue: naif O(1) append dan circular O(1) amortized | waktu gabungan {durasi:.3f} ms"),
-            fg="#78A889" if berhasil else "#D98B8B"
+            fg="#222222" if berhasil else "#444444"
         )
         self.perbarui_antrean()
 
@@ -1435,10 +1475,10 @@ class App:
             self.label_status_antrean.config(
                 text=(f"{len(keluar)} pesanan keluar dari circular queue: {', '.join(str(x) for x in keluar[:8])}"
                       f"{' ...' if len(keluar) > 8 else ''}\nPergeseran elemen: 0 | Waktu: {durasi:.3f} ms"),
-                fg="#78A889"
+                fg="#222222"
             )
         else:
-            self.label_status_antrean.config(text="Circular queue kosong.", fg="#D98B8B")
+            self.label_status_antrean.config(text="Circular queue kosong.", fg="#444444")
         self.perbarui_antrean()
 
     def _uraikan_aksi_riwayat(self, aksi, undo=True):
@@ -1474,7 +1514,7 @@ class App:
         if aksi is None:
             self.label_status_antrean.config(
                 text="Stack undo kosong; tidak ada aksi yang dapat dibatalkan.",
-                fg="#D98B8B"
+                fg="#444444"
             )
             self.perbarui_antrean()
             return
@@ -1489,7 +1529,7 @@ class App:
             self.label_status_antrean.config(
                 text=self._uraikan_aksi_riwayat(aksi, undo=True) +
                      f"\nWaktu undo: {durasi:.3f} ms | Stack undo: {self.riwayat_antrean.ukuran_undo()} | Stack redo: {self.riwayat_antrean.ukuran_redo()}",
-                fg="#78A889"
+                fg="#222222"
             )
         self.perbarui_antrean()
 
@@ -1498,7 +1538,7 @@ class App:
         if aksi is None:
             self.label_status_antrean.config(
                 text="Stack redo kosong; tidak ada aksi yang dapat diulang.",
-                fg="#D98B8B"
+                fg="#444444"
             )
             self.perbarui_antrean()
             return
@@ -1513,7 +1553,7 @@ class App:
             self.label_status_antrean.config(
                 text=self._uraikan_aksi_riwayat(aksi, undo=False) +
                      f"\nWaktu redo: {durasi:.3f} ms | Stack undo: {self.riwayat_antrean.ukuran_undo()} | Stack redo: {self.riwayat_antrean.ukuran_redo()}",
-                fg="#78A889"
+                fg="#222222"
             )
         self.perbarui_antrean()
 
@@ -1540,7 +1580,7 @@ class App:
                 entries.append(f"REDO-STACK  | {action[0]} | {str(action[1])[:50]}")
             if not entries:
                 entries = ["Belum ada riwayat aksi antrean."]
-            self.text_m2_command.insert("1.0", "\\n".join(entries))
+            self.text_m2_command.insert("1.0", "\n".join(entries))
         self._render_tabel_m2()
 
     def enqueue_naif(self):
@@ -1570,10 +1610,10 @@ class App:
             self.label_status_antrean.config(
                 text=(f"{len(keluar)} pesanan keluar dari antrean naif: {', '.join(str(x) for x in keluar[:8])}"
                       f"{' ...' if len(keluar) > 8 else ''}\nElemen digeser: {geser:,} | Waktu: {durasi:.3f} ms"),
-                fg="#78A889"
+                fg="#222222"
             )
         else:
-            self.label_status_antrean.config(text="Antrean naif kosong.", fg="#D98B8B")
+            self.label_status_antrean.config(text="Antrean naif kosong.", fg="#444444")
         self.perbarui_antrean()
 
     def halaman_kalkulator(self):
@@ -1581,24 +1621,24 @@ class App:
         self._buat_header("M2 — Stack: Hitung Struk Lewat Postfix",
                           "Konversi infix ke postfix menggunakan stack operator, lalu evaluasi postfix dengan stack angka.")
         control = tk.Frame(self.content, bg=self.bg_card,
-                           highlightbackground="#E7DEEE", highlightthickness=1)
+                           highlightbackground="#D9D9D9", highlightthickness=1)
         control.pack(fill="x", padx=22, pady=(4, 8))
         tk.Label(control, text="Struk belanja (infix)", font=("Arial", 10, "bold"),
                  bg=self.bg_card, fg=self.text_utama).pack(anchor="w", padx=14, pady=(8, 3))
         self.input_ekspresi = tk.Entry(control, font=("Arial", 11), width=55)
         self.input_ekspresi.pack(anchor="w", padx=14, pady=(0, 5))
         self.input_ekspresi.insert(0, "(3 * 12000) + (2 * 8500) - 5000")
-        tk.Button(control, text="HITUNG", bg="#2C4260", fg="white",
+        tk.Button(control, text="HITUNG", bg="#333333", fg="white",
                   relief="flat", padx=22, command=self.hitung_kalkulator
                   ).pack(anchor="w", padx=14, pady=(0, 8))
         self.label_hasil_kalkulator = tk.Label(
             self.content, text="Postfix: - | TOTAL: -",
-            bg="#F7F4E8", fg=self.text_utama, justify="left",
+            bg="#F5F5F5", fg=self.text_utama, justify="left",
             anchor="w", padx=10, pady=6
         )
         self.label_hasil_kalkulator.pack(fill="x", padx=22, pady=(0, 6))
         card = tk.Frame(self.content, bg=self.bg_card,
-                        highlightbackground="#E7DEEE", highlightthickness=1)
+                        highlightbackground="#D9D9D9", highlightthickness=1)
         card.pack(fill="both", expand=True, padx=22, pady=(0, 7))
         tk.Label(card, text="LANGKAH STACK (infix → postfix → evaluasi)",
                  font=("Arial", 10, "bold"), bg=self.bg_card,
@@ -1698,7 +1738,7 @@ class App:
             self.text_m2_command.delete("1.0",tk.END)
             self.text_m2_command.insert("1.0",f"stack_postfix  → M2 → stack     {hasil}")
         except Exception as error:
-            self.label_hasil_kalkulator.config(text=f"Ekspresi tidak valid: {error}",fg="#D98B8B")
+            self.label_hasil_kalkulator.config(text=f"Ekspresi tidak valid: {error}",fg="#444444")
 
     # M3 - LAPORAN TERURUT
 
@@ -1709,7 +1749,7 @@ class App:
         self._bersihkan_content()
         self._buat_header(judul, deskripsi)
         card = tk.Frame(self.content, bg=self.bg_card,
-                        highlightbackground="#E7DEEE", highlightthickness=1)
+                        highlightbackground="#D9D9D9", highlightthickness=1)
         card.pack(fill="x", padx=22, pady=(4, 10))
         return card
 
@@ -1812,17 +1852,17 @@ class App:
                 if n < 0:
                     raise ValueError
             except ValueError:
-                status.config(text="Jumlah harus bilangan bulat >= 0.", fg="#D98B8B")
+                status.config(text="Jumlah harus bilangan bulat >= 0.", fg="#444444")
                 return
             total = self.array.size
             if n == 0:
                 n = total
             if n > total:
-                status.config(text=f"Jumlah melebihi data tersedia ({total}).", fg="#D98B8B")
+                status.config(text=f"Jumlah melebihi data tersedia ({total}).", fg="#444444")
                 return
             if algoritma == "insertion" and n > 20000:
                 status.config(text="DITOLAK: batas Insertion Sort adalah 20.000 baris. Gunakan Merge Sort untuk data penuh.",
-                              fg="#D98B8B")
+                              fg="#444444")
                 return
             data = [self.array.get(i) for i in range(n)]
             if algoritma == "insertion":
@@ -1838,7 +1878,7 @@ class App:
                 widget.destroy()
             self._tabel_m3(holder, hasil)
 
-        tk.Button(row, text="JALANKAN SORT", bg="#D8CBEA", fg=self.text_utama,
+        tk.Button(row, text="JALANKAN SORT", bg="#FFFFFF", fg=self.text_utama,
                   relief="flat", padx=14, command=jalankan).pack(side="left", padx=8)
 
     def halaman_m3_insertion(self):
@@ -1867,7 +1907,7 @@ class App:
         def cari():
             target = entry.get().strip()
             if not target:
-                status.config(text="OID wajib diisi.", fg="#D98B8B")
+                status.config(text="OID wajib diisi.", fg="#444444")
                 return
             data = self._data_m3()
             if binary:
@@ -1892,13 +1932,13 @@ class App:
                         f"{durasi_cari:.6f} ms".replace(",", ".") if idx >= 0 else
                         f"OID tidak ditemukan | {cmp_cari:,} perbandingan | "
                         f"{durasi_cari:.6f} ms".replace(",", "."))
-            status.config(text=teks, fg=self.text_utama if found_data is not None else "#D98B8B")
+            status.config(text=teks, fg=self.text_utama if found_data is not None else "#444444")
             for widget in holder.winfo_children():
                 widget.destroy()
             if found_data is not None:
                 self._tabel_m3_search(holder, found_data)
 
-        tk.Button(row, text="CARI", bg="#D8CBEA", fg=self.text_utama,
+        tk.Button(row, text="CARI", bg="#FFFFFF", fg=self.text_utama,
                   relief="flat", padx=18, command=cari).pack(side="left", padx=8)
 
     def halaman_m3_linear(self):
@@ -1937,7 +1977,7 @@ class App:
             text=subjudul,
             font=("Arial", 11),
             bg=self.bg_utama,
-            fg="#8A8196"
+            fg="#666666"
         ).pack(
             anchor="w",
             pady=(5, 0)
@@ -1949,7 +1989,7 @@ class App:
             bg=self.bg_card,
             width=200,
             height=90,
-            highlightbackground="#E7DEEE",
+            highlightbackground="#D9D9D9",
             highlightthickness=1
         )
         card.pack(
@@ -1966,7 +2006,7 @@ class App:
             text=judul,
             font=("Arial", 9, "bold"),
             bg=self.bg_card,
-            fg="#8A8196"
+            fg="#666666"
         ).pack(
             anchor="w",
             padx=15,
